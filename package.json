@@ -2,9 +2,13 @@
   "name": "cosmic-explorer",
   "version": "1.0.0",
   "description": "Interactive astronomy experience with Three.js",
-  "main": "index.html",
+  "main": "server.js",
   "scripts": {
+    "start": "node server.js",
     "postinstall": "node setup-libs.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   },
   "dependencies": {
     "gsap": "^3.14.2",
