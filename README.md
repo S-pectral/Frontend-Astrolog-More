@@ -192,7 +192,7 @@ Bu proje eğitim amaçlıdır.
 
 ## 👨‍💻 Geliştirici
 
-Senior Frontend Developer tarafından geliştirilmiştir.
+Sercan Akçelik tarafından geliştirilmiştir.
 
 ---
 
