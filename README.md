@@ -1,4 +1,4 @@
-# 🌌 Cosmic Explorer (S-pectral Edition)
+# 🌌 Cosmic Explorer (S-pectral)
 > An immersive, state-of-the-art 3D Solar System simulation built with Three.js and GSAP.
 
 [![Version](https://img.shields.io/badge/Version-1.2.0-blueviolet?style=for-the-badge)](https://github.com/S-pectral/Frontend-Astrolog-More)
