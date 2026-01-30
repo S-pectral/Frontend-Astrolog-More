@@ -70,7 +70,6 @@
 | **Q/E** | Roll (Flight) |
 | **Mouse** | Pitch / Orbit (All Modes) |
 | **F** | Toggle Flight Mode |
-| **L** | Land (Near Planets) |
 
 ---
 
