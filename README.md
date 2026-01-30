@@ -2,20 +2,19 @@
 
 Interaktif bir astronomi deneyimi - Three.js ile yapılmış profesyonel bir 3D gezegen görselleştirme uygulaması.
 
-![Cosmic Explorer](https://img.shields.io/badge/Version-1.0.0-blue)
+![Cosmic Explorer](https://img.shields.io/badge/Version-1.1.0-blue)
 ![Three.js](https://img.shields.io/badge/Three.js-r128-green)
 ![GSAP](https://img.shields.io/badge/GSAP-3.14.2-orange)
 
 ## ✨ Özellikler
 
-- **Gerçekçi 3D Gezegenler**: Earth, Mars, Jupiter ve Black Hole
-- **Akıcı Animasyonlar**: GSAP ile sinematik geçişler
-- **Interaktif Navigasyon**: Gezegenler arası sorunsuz geçiş
-- **Özel Cursor**: Özelleştirilmiş cursor tasarımı
-- **Parallax Efekti**: Mouse hareketine duyarlı kamera
-- **Responsive Tasarım**: Tüm cihazlarda uyumlu
-- **Yükleme Ekranı**: Profesyonel animasyonlu loading
-- **Info Panel**: Her gezegen için detaylı bilgiler
+- **Gelişmiş 3D Modeller**: Güneş (Özel Shader), Dünya, Mars, Jüpiter, Satürn, Ay ve Kara Delik.
+- **Warp Geçiş Efekti**: Gezegenler arası geçişte sinematik "ışık hızı" (warp) animasyonu.
+- **Yüksek Performans**: Optimize edilmiş geometri ve shader yapıları (60+ FPS).
+- **Dinamik Atmosfer**: Parıltılı atmosfer ve bulut katmanları.
+- **Canlı Arka Plan**: Titreyen yıldızlar ve rastgele geçen meteorlar.
+- **Model Galerisi**: Harici 3D modelleri incelemek için özel vitrin sayfası.
+- **Ses Efektleri**: Etkileşimli arayüz ve uzay ambiyans sesleri.
 
 ## 🚀 Kurulum
 
@@ -60,20 +59,28 @@ start index.html
 ```
 cosmic-explorer/
 ├── index.html              # Ana HTML dosyası
+├── models.html             # [YENİ] 3D Model Vitrini
 ├── package.json            # NPM bağımlılıkları
-├── setup-libs.js          # Kütüphane kurulum scripti
-├── start.bat              # Windows başlatma scripti
+├── setup-libs.js           # Kütüphane kurulum scripti
+├── start.bat               # Windows başlatma scripti
 ├── start.sh               # Mac/Linux başlatma scripti
 │
 ├── js/
-│   └── app.js             # Ana uygulama mantığı
+│   ├── main.js             # Ana uygulama mantığı
+│   ├── models_app.js       # Model görüntüleyici mantığı
+│   ├── config/             # Gezegen ayarları
+│   ├── core/               # Sahne yönetimi (SceneManager)
+│   ├── factories/          # Gezegen oluşturucular (PlanetFactory)
+│   ├── systems/            # Meteor, Ses vb. sistemler
+│   └── ui/                 # Arayüz yönetimi
 │
 ├── lib/
 │   ├── three.min.js       # Three.js kütüphanesi
 │   └── gsap.min.js        # GSAP animasyon kütüphanesi
 │
 └── styles/
-    ├── main.css           # Ana stiller
+    ├── main.css            # Ana stiller
+    ├── models.css          # Model sayfası stilleri
     ├── cursor.css         # Özel cursor stilleri
     ├── navbar.css         # Navigasyon stilleri
     └── loading.css        # Yükleme ekranı stilleri
@@ -81,16 +88,14 @@ cosmic-explorer/
 
 ## 🎮 Kullanım
 
-### Gezegen Değiştirme
+### Gezegen Kontrolleri
+- **Sol Tık + Sürükle**: Gezegen etrafında dönme.
+- **Tekerlek**: Yakınlaşma / Uzaklaşma.
+- **Butonlar**: Navigasyon menüsünü kullanarak gezegenler arası "Warp" yapın.
 
-1. Üst navigasyon çubuğundan bir gezegen seçin
-2. Gezegen otomatik olarak yüklenecek ve animasyonlu geçiş yapılacak
-3. Sol alttaki info panelden gezegen bilgilerini görüntüleyin
-
-### Mouse Kontrolleri
-
-- **Mouse Hareketi**: Parallax kamera efekti
-- **Hover**: İnteraktif elementlerde görsel geri bildirim
+### Model Galerisi
+- Ana menüdeki "Models" butonuna tıklayarak galeriye gidin.
+- Burada harici 3D varlıkları (küp, gemi vb.) inceleyebilirsiniz.
 
 ### Gezegenler
 
@@ -118,21 +123,15 @@ cosmic-explorer/
 - Ölçülemez mesafe
 - Olay ufku
 
-## 🛠️ Teknik Detaylar
+## 🛠️ Teknik Güncellemeler (v1.1.0)
 
-### Kullanılan Teknolojiler
+### Görsel İyileştirmeler
+- **Güneş Shader**: Güneş yüzeyi için granüllü gürültü (noise) ve kenar kararması (limb darkening) eklendi.
+- **Warp Modu**: Geçişler artık sadece büyüyüp küçülme değil, derinlikten sahneye uçuş şeklinde.
 
-- **Three.js (r128)**: 3D grafik motoru
-- **GSAP (3.14.2)**: Animasyon kütüphanesi
-- **Vanilla JavaScript**: ES5+ uyumlu kod
-- **CSS3**: Modern stil ve animasyonlar
-
-### Performans Optimizasyonları
-
-- Pixel ratio sınırlandırması (max 2x)
-- Efficient geometry management
-- Optimized particle systems
-- Responsive resource loading
+### Optimizasyon
+- Gezegen geometrileri 128x segmentten 64x segmente düşürülerek performans artırıldı (%75 GPU yükü azaltıldı).
+- Çökme sorunları (Loading Screen ve Ses Sistemi) giderildi.
 
 ### Tarayıcı Desteği
 

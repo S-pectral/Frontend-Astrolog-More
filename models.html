@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Explorer - 3D Models</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/navbar.css">
+    <link rel="stylesheet" href="styles/models.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav id="model-nav">
+        <div class="nav-container">
+            <a href="index.html" class="logo-link">
+                <div class="logo">
+                    <span class="logo-icon">←</span>
+                    <span class="logo-text">BACK TO COSMOS</span>
+                </div>
+            </a>
+            <div class="nav-title">MODEL ARCHIVE</div>
+            <div class="nav-bg"></div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="models-container">
+        <div class="model-viewer-wrapper">
+            <!-- Cropping Container to hide Sketchfab UI bars -->
+            <div class="iframe-crop-container">
+                <iframe title="Rocket Orbiting Moon" frameborder="0" allowfullscreen mozallowfullscreen="true"
+                    webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking
+                    execution-while-out-of-viewport execution-while-not-rendered web-share
+                    src="https://sketchfab.com/models/c613bee6fbd041e58a35d777ae87bdcb/embed?autostart=1&ui_infos=0&ui_controls=0&ui_stop=0&ui_watermark=0&ui_hint=0&ui_help=0&ui_settings=0&ui_vr=0&ui_fullscreen=0&ui_animations=0">
+                </iframe>
+            </div>
+        </div>
+
+        <div class="model-info">
+            <h1 id="model-title">Rocket Orbiting Moon</h1>
+            <p id="model-desc">A detailed 3D visualization of a rocket performing an orbital maneuver around the Moon.
+                Embedded via Sketchfab.</p>
+            <div class="model-list">
+                <div class="model-card active"
+                    onclick="selectModel(this, 'c613bee6fbd041e58a35d777ae87bdcb', 'Rocket Orbiting Moon', 'Bastien Genbrugge')">
+                    <div class="card-icon">🚀</div>
+                    <div class="card-meta">
+                        <h4>Rocket Orbiting Moon</h4>
+                        <span>Bastien Genbrugge</span>
+                    </div>
+                </div>
+                <div class="model-card"
+                    onclick="selectModel(this, '2f49a9f28a4a4d788856d2e20754872e', 'Apollo Command Module', 'Grotex')">
+                    <div class="card-icon">🛸</div>
+                    <div class="card-meta">
+                        <h4>Apollo Command Module</h4>
+                        <span>Grotex</span>
+                    </div>
+                </div>
+                <div class="model-card"
+                    onclick="selectModel(this, 'b64f6007aa754cd296f3417a3a6f57ee', 'Apollo Interior', 'James')">
+                    <div class="card-icon">🕹️</div>
+                    <div class="card-meta">
+                        <h4>Apollo Interior</h4>
+                        <span>James</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Libraries -->
+    <script src="lib/three.min.js"></script>
+    <script src="lib/gsap.min.js"></script>
+
+    <script>
+        function selectModel(card, modelId, title, author) {
+            console.log('Switching to model:', modelId);
+            // Update Active State
+            document.querySelectorAll('.model-card').forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
+
+            // Update Text
+            const titleEl = document.getElementById('model-title');
+            const descEl = document.getElementById('model-desc');
+
+            // Animate Text Change
+            titleEl.style.opacity = '0';
+            descEl.style.opacity = '0';
+
+            setTimeout(() => {
+                titleEl.textContent = title;
+                descEl.innerHTML = `Model by <strong>${author}</strong>. Explore this 3D asset in full interactive mode.`;
+                titleEl.style.opacity = '1';
+                descEl.style.opacity = '1';
+            }, 300);
+
+            // Update Iframe
+            const iframe = document.querySelector('.iframe-crop-container iframe');
+            const baseUrl = `https://sketchfab.com/models/${modelId}/embed`;
+            const params = `?autostart=1&ui_infos=0&ui_controls=0&ui_stop=0&ui_watermark=0&ui_hint=0&ui_help=0&ui_settings=0&ui_vr=0&ui_fullscreen=0&ui_animations=0`;
+
+            iframe.src = baseUrl + params;
+        }
+    </script>
+</body>
+
+</html>
