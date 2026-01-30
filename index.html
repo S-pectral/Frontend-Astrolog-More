@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="styles/cursor.css">
     <link rel="stylesheet" href="styles/navbar.css">
     <link rel="stylesheet" href="styles/loading.css">
+    <link rel="stylesheet" href="styles/hud.css">
 </head>
 
 <body>
@@ -44,39 +45,86 @@
                 <span class="logo-text">COSMIC EXPLORER</span>
             </div>
             <ul class="nav-items">
-                <li><a href="#" data-planet="sun" class="nav-link">
-                        <span class="nav-icon">☀️</span>
-                        <span class="nav-text">Sun</span>
+                <!-- Planets Dropdown -->
+                <li class="dropdown">
+                    <a href="#" class="nav-link dropdown-toggle">
+                        <span class="nav-icon">🪐</span>
+                        <span class="nav-text">Gezegenler</span>
                         <div class="nav-glow"></div>
-                    </a></li>
-                <li><a href="#" data-planet="earth" class="nav-link active">
-                        <span class="nav-icon">🌍</span>
-                        <span class="nav-text">Earth</span>
-                        <div class="nav-glow"></div>
-                    </a></li>
-                <li><a href="#" data-planet="moon" class="nav-link">
+                    </a>
+                    <div class="dropdown-content">
+                        <a href="#" data-planet="sun" class="nav-link"><span class="nav-icon">☀️</span> Sun</a>
+                        <a href="#" data-planet="mercury" class="nav-link"><span class="nav-icon">🌑</span> Mercury</a>
+                        <a href="#" data-planet="venus" class="nav-link"><span class="nav-icon">🌕</span> Venus</a>
+                        <a href="#" data-planet="earth" class="nav-link active"><span class="nav-icon">🌍</span>
+                            Earth</a>
+                        <a href="#" data-planet="mars" class="nav-link"><span class="nav-icon">🔴</span> Mars</a>
+                        <a href="#" data-planet="jupiter" class="nav-link"><span class="nav-icon">🪐</span> Jupiter</a>
+                        <a href="#" data-planet="saturn" class="nav-link"><span class="nav-icon">🪐</span> Saturn</a>
+                        <a href="#" data-planet="uranus" class="nav-link"><span class="nav-icon">❄️</span> Uranus</a>
+                        <a href="#" data-planet="neptune" class="nav-link"><span class="nav-icon">🔵</span> Neptune</a>
+                    </div>
+                </li>
+
+                <!-- Moons Dropdown -->
+                <li class="dropdown">
+                    <a href="#" class="nav-link dropdown-toggle">
                         <span class="nav-icon">🌑</span>
-                        <span class="nav-text">Moon</span>
+                        <span class="nav-text">Uydular</span>
                         <div class="nav-glow"></div>
-                    </a></li>
-                <li><a href="#" data-planet="mars" class="nav-link">
-                        <span class="nav-icon">🔴</span>
-                        <span class="nav-text">Mars</span>
+                    </a>
+                    <div class="dropdown-content">
+                        <a href="#" data-planet="moon" class="nav-link"><span class="nav-icon">🌑</span> Moon
+                            (Earth)</a>
+                        <a href="#" data-planet="titan" class="nav-link"><span class="nav-icon">🌕</span> Titan
+                            (Saturn)</a>
+                        <a href="#" data-planet="io" class="nav-link"><span class="nav-icon">🌋</span> Io (Jupiter)</a>
+                        <a href="#" data-planet="europa" class="nav-link"><span class="nav-icon">🧊</span> Europa
+                            (Jupiter)</a>
+                        <a href="#" data-planet="ganymede" class="nav-link"><span class="nav-icon">🌑</span> Ganymede
+                            (Jupiter)</a>
+                        <a href="#" data-planet="callisto" class="nav-link"><span class="nav-icon">🌑</span> Callisto
+                            (Jupiter)</a>
+                        <a href="#" data-planet="phobos" class="nav-link"><span class="nav-icon">🥔</span> Phobos
+                            (Mars)</a>
+                        <a href="#" data-planet="deimos" class="nav-link"><span class="nav-icon">🥔</span> Deimos
+                            (Mars)</a>
+                    </div>
+                </li>
+
+                <!-- Artificial Objects Dropdown -->
+                <li class="dropdown">
+                    <a href="#" class="nav-link dropdown-toggle">
+                        <span class="nav-icon">🛰️</span>
+                        <span class="nav-text">Yapay Cisimler</span>
                         <div class="nav-glow"></div>
-                    </a></li>
-                <li><a href="#" data-planet="jupiter" class="nav-link">
-                        <span class="nav-icon">🪐</span>
-                        <span class="nav-text">Jupiter</span>
+                    </a>
+                    <div class="dropdown-content">
+                        <a href="#" data-planet="iss" class="nav-link"><span class="nav-icon">🛰️</span> ISS</a>
+                        <a href="#" data-planet="hubble" class="nav-link"><span class="nav-icon">🔭</span> Hubble</a>
+                        <a href="#" data-planet="voyager" class="nav-link"><span class="nav-icon">📡</span> Voyager
+                            1</a>
+                    </div>
+                </li>
+
+                <!-- Other -->
+                <li class="dropdown">
+                    <a href="#" class="nav-link dropdown-toggle">
+                        <span class="nav-icon">🌌</span>
+                        <span class="nav-text">Cisimler</span>
                         <div class="nav-glow"></div>
-                    </a></li>
-                <li><a href="#" data-planet="saturn" class="nav-link">
-                        <span class="nav-icon">🪐</span>
-                        <span class="nav-text">Saturn</span>
-                        <div class="nav-glow"></div>
-                    </a></li>
-                <li><a href="#" data-planet="blackhole" class="nav-link">
-                        <span class="nav-icon">⚫</span>
-                        <span class="nav-text">Black Hole</span>
+                    </a>
+                    <div class="dropdown-content">
+                        <a href="#" data-planet="blackhole" class="nav-link"><span class="nav-icon">⚫</span> Black
+                            Hole</a>
+                        <a href="#" data-planet="asteroidBelt" class="nav-link"><span class="nav-icon">☄️</span>
+                            Asteroid Belt</a>
+                    </div>
+                </li>
+
+                <li><a href="#" data-planet="compare" class="nav-link special-link">
+                        <span class="nav-icon">📏</span>
+                        <span class="nav-text">Compare</span>
                         <div class="nav-glow"></div>
                     </a></li>
                 <li><a href="models.html" class="nav-link special-link">
@@ -111,11 +159,59 @@
         </div>
     </div>
 
+    <!-- Flight HUD -->
+    <div id="flight-hud" class="hidden">
+        <div class="hud-top">
+            <!-- Compass Strip removed, moving to bottom -->
+            <div class="hud-stat">
+                <span class="hud-label">TARGET</span>
+                <span class="hud-value" id="hud-target">NONE</span>
+            </div>
+        </div>
+
+        <div class="hud-center">
+            <div id="hud-action" class="hidden">
+                <span class="key-hint">E</span>
+                <span class="action-text">ENTER ORBIT</span>
+            </div>
+        </div>
+
+        <div class="hud-bottom">
+            <div class="hud-stat">
+                <span class="hud-label">SPEED</span>
+                <span class="hud-value" id="hud-speed">0 km/s</span>
+            </div>
+            <div class="hud-stat">
+                <span class="hud-label">DISTANCE</span>
+                <span class="hud-value" id="hud-dist">-</span>
+            </div>
+        </div>
+
+        <!-- NEW VISUAL COMPASS -->
+        <div id="compass-container">
+            <div class="compass-line"></div>
+            <div class="compass-markers">
+                <!-- Markers injected via JS -->
+            </div>
+            <div class="compass-readout">0°</div>
+        </div>
+    </div>
+
     <!-- Main Canvas -->
     <canvas id="cosmos-canvas"></canvas>
 
     <!-- Libraries -->
     <script src="lib/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
+    <!-- Post Processing -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+
     <script src="lib/gsap.min.js"></script>
     <script type="module" src="js/main.js"></script>
 </body>

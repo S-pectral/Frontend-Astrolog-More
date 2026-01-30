@@ -1,203 +1,101 @@
-# 🌌 Cosmic Explorer
+# 🌌 Cosmic Explorer (S-pectral Edition)
+> An immersive, state-of-the-art 3D Solar System simulation built with Three.js and GSAP.
 
-Interaktif bir astronomi deneyimi - Three.js ile yapılmış profesyonel bir 3D gezegen görselleştirme uygulaması.
+[![Version](https://img.shields.io/badge/Version-1.2.0-blueviolet?style=for-the-badge)](https://github.com/S-pectral/Frontend-Astrolog-More)
+[![Original](https://img.shields.io/badge/Original_Project-CanKStar0-orange?style=for-the-badge)](https://github.com/CanKStar0/Frontend-Astrolog)
+[![Three.js](https://img.shields.io/badge/Three.js-r128-000000?style=for-the-badge&logo=three.js)](https://threejs.org)
 
-![Cosmic Explorer](https://img.shields.io/badge/Version-1.1.0-blue)
-![Three.js](https://img.shields.io/badge/Three.js-r128-green)
-![GSAP](https://img.shields.io/badge/GSAP-3.14.2-orange)
-
-## ✨ Özellikler
-
-- **Gelişmiş 3D Modeller**: Güneş (Özel Shader), Dünya, Mars, Jüpiter, Satürn, Ay ve Kara Delik.
-- **Warp Geçiş Efekti**: Gezegenler arası geçişte sinematik "ışık hızı" (warp) animasyonu.
-- **Yüksek Performans**: Optimize edilmiş geometri ve shader yapıları (60+ FPS).
-- **Dinamik Atmosfer**: Parıltılı atmosfer ve bulut katmanları.
-- **Canlı Arka Plan**: Titreyen yıldızlar ve rastgele geçen meteorlar.
-- **Model Galerisi**: Harici 3D modelleri incelemek için özel vitrin sayfası.
-- **Ses Efektleri**: Etkileşimli arayüz ve uzay ambiyans sesleri.
-
-## 🚀 Kurulum
-
-### Gereksinimler
-
-- Node.js (v14 veya üzeri)
-- Modern bir web tarayıcı (Chrome, Firefox, Safari, Edge)
-
-### Adımlar
-
-1. **Depoyu klonlayın veya indirin**
-```bash
-git clone <repository-url>
-cd cosmic-explorer
-```
-
-2. **Bağımlılıkları yükleyin**
-```bash
-npm install
-```
-
-3. **Uygulamayı başlatın**
-
-**Windows:**
-```bash
-start.bat
-```
-
-**Mac/Linux:**
-```bash
-chmod +x start.sh
-./start.sh
-```
-
-Veya doğrudan:
-```bash
-start index.html
-```
-
-## 📁 Proje Yapısı
-
-```
-cosmic-explorer/
-├── index.html              # Ana HTML dosyası
-├── models.html             # [YENİ] 3D Model Vitrini
-├── package.json            # NPM bağımlılıkları
-├── setup-libs.js           # Kütüphane kurulum scripti
-├── start.bat               # Windows başlatma scripti
-├── start.sh               # Mac/Linux başlatma scripti
-│
-├── js/
-│   ├── main.js             # Ana uygulama mantığı
-│   ├── models_app.js       # Model görüntüleyici mantığı
-│   ├── config/             # Gezegen ayarları
-│   ├── core/               # Sahne yönetimi (SceneManager)
-│   ├── factories/          # Gezegen oluşturucular (PlanetFactory)
-│   ├── systems/            # Meteor, Ses vb. sistemler
-│   └── ui/                 # Arayüz yönetimi
-│
-├── lib/
-│   ├── three.min.js       # Three.js kütüphanesi
-│   └── gsap.min.js        # GSAP animasyon kütüphanesi
-│
-└── styles/
-    ├── main.css            # Ana stiller
-    ├── models.css          # Model sayfası stilleri
-    ├── cursor.css         # Özel cursor stilleri
-    ├── navbar.css         # Navigasyon stilleri
-    └── loading.css        # Yükleme ekranı stilleri
-```
-
-## 🎮 Kullanım
-
-### Gezegen Kontrolleri
-- **Sol Tık + Sürükle**: Gezegen etrafında dönme.
-- **Tekerlek**: Yakınlaşma / Uzaklaşma.
-- **Butonlar**: Navigasyon menüsünü kullanarak gezegenler arası "Warp" yapın.
-
-### Model Galerisi
-- Ana menüdeki "Models" butonuna tıklayarak galeriye gidin.
-- Burada harici 3D varlıkları (küp, gemi vb.) inceleyebilirsiniz.
-
-### Gezegenler
-
-#### 🌍 Earth (Dünya)
-- Mavi gezegen - Evimiz
-- Gerçekçi atmosfer ve bulut katmanı
-- Mesafe: 149.6M km
-- Çap: 12,742 km
-
-#### 🔴 Mars
-- Kızıl gezegen - Savaş tanrısının adını taşır
-- Kırmızımsı yüzey ve ince atmosfer
-- Mesafe: 227.9M km
-- Çap: 6,779 km
-
-#### 🪐 Jupiter
-- Gaz devi - Güneş sisteminin en büyük gezegeni
-- Renkli atmosferik bantlar
-- Mesafe: 778.5M km
-- Çap: 139,820 km
-
-#### ⚫ Black Hole
-- Uzay-zamanın büküldüği bölge
-- Yığılma diski ile birlikte
-- Ölçülemez mesafe
-- Olay ufku
-
-## 🛠️ Teknik Güncellemeler (v1.1.0)
-
-### Görsel İyileştirmeler
-- **Güneş Shader**: Güneş yüzeyi için granüllü gürültü (noise) ve kenar kararması (limb darkening) eklendi.
-- **Warp Modu**: Geçişler artık sadece büyüyüp küçülme değil, derinlikten sahneye uçuş şeklinde.
-
-### Optimizasyon
-- Gezegen geometrileri 128x segmentten 64x segmente düşürülerek performans artırıldı (%75 GPU yükü azaltıldı).
-- Çökme sorunları (Loading Screen ve Ses Sistemi) giderildi.
-
-### Tarayıcı Desteği
-
-- Chrome 90+
-- Firefox 88+
-- Safari 14+
-- Edge 90+
-
-## 🎨 Özelleştirme
-
-### Gezegen Renkleri Değiştirme
-
-[`js/app.js`](js/app.js:20) dosyasında `planetSpecs` objesini düzenleyin:
-
-```javascript
-planetSpecs: {
-    earth: {
-        color: 0x2194ce,          // Gezegen rengi
-        atmosphereColor: 0x64c8ff, // Atmosfer rengi
-        radius: 10,                // Yarıçap
-        rotationSpeed: 0.001      // Dönüş hızı
-    }
-}
-```
-
-### Yeni Gezegen Ekleme
-
-1. `planetSpecs` içine yeni gezegen ekleyin
-2. HTML'de yeni navigasyon butonu ekleyin
-3. Gerekirse özel render fonksiyonu oluşturun
-
-## 📝 Notlar
-
-- Mobil cihazlarda özel cursor devre dışı bırakılır
-- Tüm animasyonlar GSAP ile optimize edilmiştir
-- Three.js sahne otomatik olarak temizlenir
-
-## 🐛 Sorun Giderme
-
-### "Three.js yüklenemedi" hatası
-```bash
-npm install
-node setup-libs.js
-```
-
-### Sayfa boş görünüyor
-- Konsolu kontrol edin (F12)
-- `lib/` klasöründe dosyaların olduğundan emin olun
-- Tarayıcı cache'ini temizleyin
-
-### Animasyonlar çalışmıyor
-- GSAP kütüphanesinin yüklendiğinden emin olun
-- Konsol hatalarını kontrol edin
-
-## 📄 Lisans
-
-Bu proje eğitim amaçlıdır.
-
-## 👨‍💻 Geliştirici
-
-Senior Frontend Developer tarafından geliştirilmiştir.
-
-## 🤝 Katkıda Bulunanlar
-
-- Sercan Akçelik -Full Stack Developer
+**Cosmic Explorer** is a premium interactive astronomy experience. This edition is a highly optimized fork of the original [Frontend-Astrolog](https://github.com/CanKStar0/Frontend-Astrolog) by **CanKStar0**, featuring enhanced visuals, flight mechanics, and UI refinements.
 
 ---
 
-**🌟 Keyifli Keşifler!**
+## ✨ Primary Features
+
+### 🎮 Discovery Modes
+- **Orbit Mode**: Smooth, cinematic camera controls focused on individual planets. Features "Warp Drive" transitions for seamless interstellar travel.
+- **Flight Mode (F)**: Take direct control of a spaceship. Navigate the void with semi-realistic physics and interact with the environment.
+
+### ☄️ Celestial Visuals
+- **Advanced Sun Shader**: Procedural solar surface with limb darkening and dynamic noise.
+- **Reactive Asteroid Belt**: A lush "Meteor Sea" with thousands of unique rocks, featuring optimized instance rendering for high performance.
+- **Atmospheric Rendering**: Custom-built atmosphere layers for Earth and Titan with realistic light scattering.
+
+### 🛰️ Dynamic Database
+- **Comprehensive Catalog**: Includes all major planets, their moons (Io, Europa, Titan, etc.), and artificial satellites (ISS, Hubble, Voyager 1).
+- **Live Compass**: Real-time HUD tracking of celestial bodies relative to your position.
+
+---
+
+## 🛠️ Technical Stack
+
+- **Core**: JavaScript (ES6+), HTML5, CSS3
+- **Graphics**: [Three.js](https://threejs.org/) (WebGL)
+- **Animation**: [GSAP](https://greensock.com/gsap/) (GreenSock) for cinematic transitions and UI.
+- **Performance**: InstancedMesh for asteroid belts, shader-based atmospheric effects, and optimized geometry batches.
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+- [Node.js](https://nodejs.org/) (v18 or higher recommended)
+- A modern WebGL-capable browser
+
+### Installation
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/S-pectral/Frontend-Astrolog-More.git
+   cd Frontend-Astrolog-More
+   ```
+
+2. **Setup dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Launch the explorer**
+   ```bash
+   npm start
+   ```
+   *Alternatively, open `index.html` directly if using a local server extension.*
+
+---
+
+## ⌨️ Controls
+
+| Key | Action |
+| --- | --- |
+| **W/S** | Accelerate / Decelerate (Flight) |
+| **A/D** | Yaw Left / Right (Flight) |
+| **Q/E** | Roll (Flight) |
+| **Mouse** | Pitch / Orbit (All Modes) |
+| **F** | Toggle Flight Mode |
+| **L** | Land (Near Planets) |
+
+---
+
+## 📂 Project Governance
+
+This project is a fork of [CanKStar0/Frontend-Astrolog](https://github.com/CanKStar0/Frontend-Astrolog), optimized by the **Spectral** team for high-performance frontend visualization. 
+
+### 🏗️ Architecture
+- `js/core/`: Scene, Lighting, and Camera management.
+- `js/factories/`: Procedural generation of planets and effects.
+- `js/systems/`: Flight control, Meteor physics, and Audio.
+- `js/ui/`: Glassmorphism-based HUD and Interactive Compass.
+
+---
+
+## 📄 License & Attribution
+
+- **Original Creator**: [CanKStar0](https://github.com/CanKStar0)
+- **Maintainer**: [Spectral](https://github.com/S-pectral)
+
+This project is intended for educational and research purposes in the field of 3D Web Visualization.
+
+---
+
+<p align="center">
+  <b>🌟 Designed for the Stars. Built for the Web. 🌟</b><br>
+  <i>Copyright © 2026 Spectral. All rights reserved.</i>
+</p>

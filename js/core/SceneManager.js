@@ -35,6 +35,7 @@ export class SceneManager {
 
         this.setupLights();
         this.createStarfield();
+        this.setupPostProcessing();
 
         window.addEventListener('resize', () => this.onResize());
     }
@@ -135,9 +136,58 @@ export class SceneManager {
         }
     }
 
+    setAtmosphere(colorHex, density = 0.02) {
+        // Change background to atmosphere color (or gradient if we get fancy later)
+        const color = new THREE.Color(colorHex);
+
+        // Smooth transition could be added here with GSAP, but for now direct set
+        this.scene.background = color;
+        this.scene.fog = new THREE.FogExp2(colorHex, density);
+
+        // Hide stars by setting opacity to 0
+        const stars = this.scene.getObjectByName('stars');
+        if (stars) stars.visible = false;
+    }
+
+    resetAtmosphere() {
+        // Back to space
+        this.scene.background = new THREE.Color(0x000008);
+        this.scene.fog = null; // No fog in space
+
+        const stars = this.scene.getObjectByName('stars');
+        if (stars) stars.visible = true;
+    }
+
+    setupPostProcessing() {
+        // Post Processing
+        const renderScene = new THREE.RenderPass(this.scene, this.camera);
+
+        const bloomPass = new THREE.UnrealBloomPass(
+            new THREE.Vector2(window.innerWidth, window.innerHeight),
+            1.5, // Strength (Glow intensity)
+            0.4, // Radius
+            0.85 // Threshold
+        );
+
+        this.composer = new THREE.EffectComposer(this.renderer);
+        this.composer.addPass(renderScene);
+        this.composer.addPass(bloomPass);
+    }
+
+    render() {
+        if (this.composer) {
+            this.composer.render();
+        } else {
+            this.renderer.render(this.scene, this.camera);
+        }
+    }
+
     onResize() {
         this.camera.aspect = window.innerWidth / window.innerHeight;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(window.innerWidth, window.innerHeight);
+        if (this.composer) {
+            this.composer.setSize(window.innerWidth, window.innerHeight);
+        }
     }
 }

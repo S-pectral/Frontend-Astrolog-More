@@ -104,7 +104,7 @@ export class MeteorSystem {
         });
     }
 
-    update(scene, currentPlanet) {
+    update(scene, currentPlanet, canImpact = true) {
         // Spawn new meteors
         if (this.meteors.length < 3 && Math.random() < 0.01) {
             const meteor = this.createMeteor();
@@ -145,8 +145,8 @@ export class MeteorSystem {
             }
 
             if (distanceToCenter < planetRadius + 2 || meteor.age > meteor.maxAge) {
-                // Create impact effect
-                if (distanceToCenter < planetRadius + 2) {
+                // Create impact effect if enabled and we actually hit something
+                if (canImpact && distanceToCenter < planetRadius + 2) {
                     this.createImpactEffect(scene, meteor.mesh.position.clone());
                 }
 
@@ -154,5 +154,12 @@ export class MeteorSystem {
                 this.meteors.splice(i, 1);
             }
         }
+    }
+
+    clear(scene) {
+        for (const meteor of this.meteors) {
+            scene.remove(meteor.mesh);
+        }
+        this.meteors = [];
     }
 }
