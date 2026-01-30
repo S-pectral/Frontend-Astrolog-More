@@ -55,13 +55,13 @@ export class SceneManager {
 
     createStarfield() {
         const starsGeometry = new THREE.BufferGeometry();
-        const starCount = 10000;
+        const starCount = 15000;
         const positions = new Float32Array(starCount * 3);
+        const colors = new Float32Array(starCount * 3);
         const sizes = new Float32Array(starCount);
-        const randoms = new Float32Array(starCount); // For twinkle offset
 
         for (let i = 0; i < starCount; i++) {
-            const radius = 500 + Math.random() * 2500; // More depth
+            const radius = 500 + Math.random() * 1500;
             const theta = Math.random() * Math.PI * 2;
             const phi = Math.acos(2 * Math.random() - 1);
 
@@ -69,69 +69,53 @@ export class SceneManager {
             positions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
             positions[i * 3 + 2] = radius * Math.cos(phi);
 
+            const colorType = Math.random();
+            if (colorType < 0.1) {
+                colors[i * 3] = 0.7; colors[i * 3 + 1] = 0.8; colors[i * 3 + 2] = 1;
+            } else if (colorType < 0.2) {
+                colors[i * 3] = 1; colors[i * 3 + 1] = 0.9; colors[i * 3 + 2] = 0.7;
+            } else {
+                colors[i * 3] = 1; colors[i * 3 + 1] = 1; colors[i * 3 + 2] = 1;
+            }
+
             sizes[i] = Math.random() * 2 + 0.5;
-            randoms[i] = Math.random();
         }
 
         starsGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        starsGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
         starsGeometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
-        starsGeometry.setAttribute('random', new THREE.BufferAttribute(randoms, 1));
 
-        const starsMaterial = new THREE.ShaderMaterial({
-            uniforms: {
-                time: { value: 0 },
-                color: { value: new THREE.Color(0xffffff) }
-            },
-            vertexShader: `
-                uniform float time;
-                attribute float size;
-                attribute float random;
-                varying float vAlpha;
-                void main() {
-                    vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-                    gl_Position = projectionMatrix * mvPosition;
-                    
-                    // Size attenuation
-                    gl_PointSize = size * (300.0 / length(mvPosition.xyz));
-                    
-                    // Twinkle: Random phase based on 'random' attribute
-                    float twinkle = sin(time * 3.0 + random * 100.0);
-                    vAlpha = 0.5 + 0.5 * twinkle; // 0.0 to 1.0 range
-                }
-            `,
-            fragmentShader: `
-                uniform vec3 color;
-                varying float vAlpha;
-                void main() {
-                    // Circular soft particle
-                    vec2 coord = gl_PointCoord - vec2(0.5);
-                    float dist = length(coord);
-                    
-                    if (dist > 0.5) discard;
-                    
-                    float glow = 1.0 - (dist * 2.0);
-                    glow = pow(glow, 1.5);
-                    
-                    gl_FragColor = vec4(color, vAlpha * glow);
-                }
-            `,
+        const starsMaterial = new THREE.PointsMaterial({
+            size: 2,
+            vertexColors: true,
             transparent: true,
-            depthWrite: false,
-            blending: THREE.AdditiveBlending
+            opacity: 0.9,
+            sizeAttenuation: true
         });
 
         const stars = new THREE.Points(starsGeometry, starsMaterial);
         stars.name = 'stars';
         this.scene.add(stars);
 
-        // Add some nebula clouds as well (kept simple)
-        // ... (Nebula code omitted for brevity/performance or we can keep it? Plan didn't specify nebula changes but let's keep it clean)
-    }
-
-    update(time) {
-        const stars = this.scene.getObjectByName('stars');
-        if (stars && stars.material.uniforms) {
-            stars.material.uniforms.time.value = time;
+        // Distant nebula clouds
+        for (let i = 0; i < 5; i++) {
+            const nebulaGeometry = new THREE.PlaneGeometry(400, 400);
+            const nebulaColor = new THREE.Color().setHSL(Math.random() * 0.3 + 0.5, 0.8, 0.3);
+            const nebulaMaterial = new THREE.MeshBasicMaterial({
+                color: nebulaColor,
+                transparent: true,
+                opacity: 0.05,
+                side: THREE.DoubleSide,
+                blending: THREE.AdditiveBlending
+            });
+            const nebula = new THREE.Mesh(nebulaGeometry, nebulaMaterial);
+            nebula.position.set(
+                (Math.random() - 0.5) * 1000,
+                (Math.random() - 0.5) * 500,
+                -800 - Math.random() * 500
+            );
+            nebula.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
+            this.scene.add(nebula);
         }
     }
 

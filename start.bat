@@ -1,16 +1,12 @@
 @echo off
 echo ========================================
-echo  COSMIC EXPLORER - Starting...
+echo  COSMIC EXPLORER - Starting Server...
 echo ========================================
 echo.
-echo Opening Cosmic Explorer in your browser...
+echo Starting local server on port 3000...
 echo.
-echo If browser doesn't open automatically, navigate to:
-echo file:///%CD%/index.html
-echo.
-echo Press Ctrl+C to exit
-echo ========================================
 
-start index.html
+start "" http://localhost:3000
+node server.js
 
 pause

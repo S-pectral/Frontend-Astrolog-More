@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <link rel="stylesheet" href="styles/navbar.css">
     <link rel="stylesheet" href="styles/loading.css">
 </head>
+
 <body>
     <!-- Custom Cursor -->
     <div id="custom-cursor">
@@ -42,26 +44,46 @@
                 <span class="logo-text">COSMIC EXPLORER</span>
             </div>
             <ul class="nav-items">
+                <li><a href="#" data-planet="sun" class="nav-link">
+                        <span class="nav-icon">☀️</span>
+                        <span class="nav-text">Sun</span>
+                        <div class="nav-glow"></div>
+                    </a></li>
                 <li><a href="#" data-planet="earth" class="nav-link active">
-                    <span class="nav-icon">🌍</span>
-                    <span class="nav-text">Earth</span>
-                    <div class="nav-glow"></div>
-                </a></li>
+                        <span class="nav-icon">🌍</span>
+                        <span class="nav-text">Earth</span>
+                        <div class="nav-glow"></div>
+                    </a></li>
+                <li><a href="#" data-planet="moon" class="nav-link">
+                        <span class="nav-icon">🌑</span>
+                        <span class="nav-text">Moon</span>
+                        <div class="nav-glow"></div>
+                    </a></li>
                 <li><a href="#" data-planet="mars" class="nav-link">
-                    <span class="nav-icon">🔴</span>
-                    <span class="nav-text">Mars</span>
-                    <div class="nav-glow"></div>
-                </a></li>
+                        <span class="nav-icon">🔴</span>
+                        <span class="nav-text">Mars</span>
+                        <div class="nav-glow"></div>
+                    </a></li>
                 <li><a href="#" data-planet="jupiter" class="nav-link">
-                    <span class="nav-icon">🪐</span>
-                    <span class="nav-text">Jupiter</span>
-                    <div class="nav-glow"></div>
-                </a></li>
+                        <span class="nav-icon">🪐</span>
+                        <span class="nav-text">Jupiter</span>
+                        <div class="nav-glow"></div>
+                    </a></li>
+                <li><a href="#" data-planet="saturn" class="nav-link">
+                        <span class="nav-icon">🪐</span>
+                        <span class="nav-text">Saturn</span>
+                        <div class="nav-glow"></div>
+                    </a></li>
                 <li><a href="#" data-planet="blackhole" class="nav-link">
-                    <span class="nav-icon">⚫</span>
-                    <span class="nav-text">Black Hole</span>
-                    <div class="nav-glow"></div>
-                </a></li>
+                        <span class="nav-icon">⚫</span>
+                        <span class="nav-text">Black Hole</span>
+                        <div class="nav-glow"></div>
+                    </a></li>
+                <li><a href="models.html" class="nav-link special-link">
+                        <span class="nav-icon">📦</span>
+                        <span class="nav-text">Models</span>
+                        <div class="nav-glow"></div>
+                    </a></li>
             </ul>
             <div class="nav-bg"></div>
         </div>
@@ -95,6 +117,7 @@
     <!-- Libraries -->
     <script src="lib/three.min.js"></script>
     <script src="lib/gsap.min.js"></script>
-    <script src="js/app.js"></script>
+    <script type="module" src="js/main.js"></script>
 </body>
+
 </html>
