@@ -440,6 +440,231 @@ export const TextureFactory = {
         }
 
         return new THREE.CanvasTexture(canvas);
+    },
+
+    generateIoTexture() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1024;
+        canvas.height = 512;
+        const ctx = canvas.getContext('2d');
+
+        // Sulfuric sulfur yellow base
+        ctx.fillStyle = '#fce205';
+        ctx.fillRect(0, 0, 1024, 512);
+
+        // Volcanic patches (Red/Orange/Dark)
+        for (let i = 0; i < 60; i++) {
+            const x = Math.random() * 1024;
+            const y = Math.random() * 512;
+            const radius = Math.random() * 40 + 5;
+            const grad = ctx.createRadialGradient(x, y, 0, x, y, radius);
+            grad.addColorStop(0, Math.random() > 0.5 ? '#8b0000' : '#d2691e');
+            grad.addColorStop(1, 'rgba(252, 226, 5, 0)');
+            ctx.fillStyle = grad;
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        return new THREE.CanvasTexture(canvas);
+    },
+
+    generateEuropaTexture() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1024;
+        canvas.height = 512;
+        const ctx = canvas.getContext('2d');
+
+        // Icy white/blue base
+        ctx.fillStyle = '#f0faff';
+        ctx.fillRect(0, 0, 1024, 512);
+
+        // Linear cracks (Lineae)
+        ctx.strokeStyle = 'rgba(100, 50, 0, 0.4)';
+        ctx.lineWidth = 1;
+        for (let i = 0; i < 40; i++) {
+            ctx.beginPath();
+            ctx.moveTo(Math.random() * 1024, Math.random() * 512);
+            ctx.lineTo(Math.random() * 1024, Math.random() * 512);
+            ctx.stroke();
+        }
+
+        // Frosty patches
+        for (let i = 0; i < 100; i++) {
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.beginPath();
+            ctx.arc(Math.random() * 1024, Math.random() * 512, Math.random() * 30 + 5, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        return new THREE.CanvasTexture(canvas);
+    },
+
+    generateAsteroidTexture(color = '#888888') {
+        const canvas = document.createElement('canvas');
+        canvas.width = 512;
+        canvas.height = 256;
+        const ctx = canvas.getContext('2d');
+
+        ctx.fillStyle = color;
+        ctx.fillRect(0, 0, 512, 256);
+
+        // Pockmarks and shadows
+        for (let i = 0; i < 150; i++) {
+            const x = Math.random() * 512;
+            const y = Math.random() * 256;
+            ctx.fillStyle = Math.random() > 0.5 ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.1)';
+            ctx.beginPath();
+            ctx.arc(x, y, Math.random() * 10 + 2, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        return new THREE.CanvasTexture(canvas);
+    },
+
+    generateMercuryTexture() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1024;
+        canvas.height = 512;
+        const ctx = canvas.getContext('2d');
+
+        // Mercury base: Grayish-brown
+        const gradient = ctx.createLinearGradient(0, 0, 0, 512);
+        gradient.addColorStop(0, '#665544');
+        gradient.addColorStop(0.5, '#887766');
+        gradient.addColorStop(1, '#665544');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, 1024, 512);
+
+        // Heavy Cratering
+        for (let i = 0; i < 500; i++) {
+            const x = Math.random() * 1024;
+            const y = Math.random() * 512;
+            const r = Math.random() * 20 + 2;
+            const brightness = Math.random() * 60 - 30;
+
+            ctx.beginPath();
+            ctx.arc(x, y, r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${100 + brightness}, ${90 + brightness}, ${80 + brightness}, 0.5)`;
+            ctx.fill();
+
+            // Highlight rim
+            ctx.strokeStyle = `rgba(${140 + brightness}, ${130 + brightness}, ${120 + brightness}, 0.3)`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            // Central peak
+            if (r > 10 && Math.random() > 0.7) {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.beginPath();
+                ctx.arc(x, y, 1, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        return new THREE.CanvasTexture(canvas);
+    },
+
+    generateVenusTexture() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 2048;
+        canvas.height = 1024;
+        const ctx = canvas.getContext('2d');
+
+        // Pale yellow/orange sulfuric acid clouds
+        const baseGradient = ctx.createLinearGradient(0, 0, 0, 1024);
+        baseGradient.addColorStop(0, '#e3bb76');
+        baseGradient.addColorStop(0.5, '#f5d59c');
+        baseGradient.addColorStop(1, '#e3bb76');
+        ctx.fillStyle = baseGradient;
+        ctx.fillRect(0, 0, 2048, 1024);
+
+        // Swirling cloud patterns
+        for (let i = 0; i < 15; i++) {
+            const y = (i / 15) * 1024;
+            ctx.fillStyle = i % 2 === 0 ? 'rgba(227, 187, 118, 0.4)' : 'rgba(245, 213, 156, 0.2)';
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            const waves = 4;
+            const freq = (waves * Math.PI * 2) / 2048;
+            for (let x = 0; x <= 2048; x += 20) {
+                const waveY = y + Math.sin(x * freq + i) * 50;
+                ctx.lineTo(x, waveY);
+            }
+            ctx.lineTo(2048, 1024);
+            ctx.lineTo(0, 1024);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        return new THREE.CanvasTexture(canvas);
+    },
+
+    generateUranusTexture() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1024;
+        canvas.height = 512;
+        const ctx = canvas.getContext('2d');
+
+        const gradient = ctx.createLinearGradient(0, 0, 0, 512);
+        gradient.addColorStop(0, '#93d2d9');
+        gradient.addColorStop(0.5, '#afe0e4');
+        gradient.addColorStop(1, '#93d2d9');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, 1024, 512);
+
+        for (let i = 0; i < 40; i++) {
+            const x = Math.random() * 1024;
+            const y = Math.random() * 512;
+            const size = Math.random() * 300 + 100;
+            const grad = ctx.createRadialGradient(x, y, 0, x, y, size);
+            grad.addColorStop(0, 'rgba(255, 255, 255, 0.15)');
+            grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+            ctx.fillStyle = grad;
+            ctx.beginPath();
+            ctx.ellipse(x, y, size, size * 0.5, 0, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        return new THREE.CanvasTexture(canvas);
+    },
+
+    generateNeptuneTexture() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1024;
+        canvas.height = 512;
+        const ctx = canvas.getContext('2d');
+
+        const gradient = ctx.createLinearGradient(0, 0, 0, 512);
+        gradient.addColorStop(0, '#2147a2');
+        gradient.addColorStop(0.5, '#3e5eb3');
+        gradient.addColorStop(1, '#2147a2');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, 1024, 512);
+
+        // Great Dark Spot
+        const spotX = 300;
+        const spotY = 320;
+        const spotGrad = ctx.createRadialGradient(spotX, spotY, 0, spotX, spotY, 100);
+        spotGrad.addColorStop(0, 'rgba(10, 20, 60, 0.5)');
+        spotGrad.addColorStop(1, 'rgba(10, 20, 60, 0)');
+        ctx.fillStyle = spotGrad;
+        ctx.beginPath();
+        ctx.ellipse(spotX, spotY, 100, 60, 0.2, 0, Math.PI * 2);
+        ctx.fill();
+
+        // White cloud streaks
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+        for (let i = 0; i < 30; i++) {
+            const x = Math.random() * 1024;
+            const y = Math.random() * 512;
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x + 150, y + (Math.random() - 0.5) * 20);
+            ctx.stroke();
+        }
+
+        return new THREE.CanvasTexture(canvas);
     }
 };
 

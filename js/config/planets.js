@@ -73,14 +73,14 @@ export const planetSpecs = {
         ]
     },
     asteroidBelt_system: {
-        radius: 1.5,
+        radius: 1.2,
         orbitRadius: 420,
-        count: 5000,
+        count: 2500, // Reduced from 5000 for better performance and spacing
         type: 'belt',
         color: 0x888888,
-        rotationSpeed: 0.0002,
+        rotationSpeed: 0.0001,
         info: {
-            title: 'Astroid Denizi',
+            title: 'Asteroid Belt',
             description: 'The Main Asteroid Belt',
             distance: '329M - 478M km',
             diameter: '150M km range',
@@ -88,14 +88,14 @@ export const planetSpecs = {
         }
     },
     asteroidbelt: { // Focus version
-        radius: 4, // Large rocks for close-up
-        orbitRadius: 25, // Centered ring
-        count: 1500,
+        radius: 1.2, // Smaller rocks for better spacing
+        orbitRadius: 45, // Wider orbit
+        count: 400, // Significantly reduced count
         isFocusOnly: true,
         color: 0xaaaaaa,
         rotationSpeed: 0.001,
         info: {
-            title: 'Astroid Denizi',
+            title: 'Asteroid Belt',
             description: 'Close inspection of the belt.',
             distance: '420M km',
             diameter: 'N/A',
@@ -264,6 +264,7 @@ export const planetSpecs = {
         orbitRadius: 0,
         distance: 0,
         isFocusOnly: true,
+        parentName: 'earth',
         color: 0xffffff,
         rotationSpeed: 0.02,
         type: 'station',
@@ -274,6 +275,7 @@ export const planetSpecs = {
         orbitRadius: 0,
         distance: 0,
         isFocusOnly: true,
+        parentName: 'earth',
         color: 0xcccccc,
         rotationSpeed: 0.015,
         type: 'telescope',
@@ -284,6 +286,7 @@ export const planetSpecs = {
         orbitRadius: 0,
         distance: 0,
         isFocusOnly: true,
+        parentName: 'mars',
         color: 0x887766,
         rotationSpeed: 0.02,
         info: { title: 'Phobos', description: 'Martian Moon', distance: '6,000 km', diameter: '22 km', period: '7.6 hours' }
@@ -293,6 +296,7 @@ export const planetSpecs = {
         orbitRadius: 0,
         distance: 0,
         isFocusOnly: true,
+        parentName: 'mars',
         color: 0x998877,
         rotationSpeed: 0.01,
         info: { title: 'Deimos', description: 'Martian Moon', distance: '23,460 km', diameter: '12 km', period: '30.3 hours' }
@@ -302,6 +306,7 @@ export const planetSpecs = {
         orbitRadius: 0,
         distance: 0,
         isFocusOnly: true,
+        parentName: 'saturn',
         color: 0xeebb55,
         atmosphereColor: 0xffaa00,
         rotationSpeed: 0.006,
@@ -312,6 +317,7 @@ export const planetSpecs = {
         orbitRadius: 0,
         distance: 0,
         isFocusOnly: true,
+        parentName: 'jupiter',
         color: 0xffffaa,
         rotationSpeed: 0.015,
         info: { title: 'Io', description: 'Volcanic Moon', distance: '421,700 km', diameter: '3,122 km', period: '1.77 days' }
@@ -321,6 +327,7 @@ export const planetSpecs = {
         orbitRadius: 0,
         distance: 0,
         isFocusOnly: true,
+        parentName: 'jupiter',
         color: 0xccffff,
         rotationSpeed: 0.012,
         info: { title: 'Europa', description: 'Icy Moon', distance: '670,900 km', diameter: '3,122 km', period: '3.55 days' }
@@ -330,6 +337,7 @@ export const planetSpecs = {
         orbitRadius: 0,
         distance: 0,
         isFocusOnly: true,
+        parentName: 'jupiter',
         color: 0xddccbb,
         rotationSpeed: 0.008,
         info: { title: 'Ganymede', description: 'Largest Moon', distance: '1.07M km', diameter: '5,268 km', period: '7.15 days' }
@@ -339,6 +347,7 @@ export const planetSpecs = {
         orbitRadius: 0,
         distance: 0,
         isFocusOnly: true,
+        parentName: 'jupiter',
         color: 0x665544,
         rotationSpeed: 0.005,
         info: { title: 'Callisto', description: 'Cratered Moon', distance: '1.88M km', diameter: '4,821 km', period: '16.69 days' }

@@ -13,7 +13,7 @@
 
 ### 🎮 Discovery Modes
 - **Orbit Mode**: Smooth, cinematic camera controls focused on individual planets. Features "Warp Drive" transitions for seamless interstellar travel.
-- **Flight Mode (F)**: Take direct control of a spaceship. Navigate the void with semi-realistic physics and interact with the environment.
+- **Flight Mode (F)**: Take direct control of a spaceship. Navigate the void with 6DOF physics and 360-degree roll control.
 
 ### ☄️ Celestial Visuals
 - **Advanced Sun Shader**: Procedural solar surface with limb darkening and dynamic noise.
@@ -66,9 +66,8 @@
 | Key | Action |
 | --- | --- |
 | **W/S** | Accelerate / Decelerate (Flight) |
-| **A/D** | Yaw Left / Right (Flight) |
-| **Q/E** | Roll (Flight) |
-| **Mouse** | Pitch / Orbit (All Modes) |
+| **A/D** | **360° Roll** Left / Right (Flight) |
+| **Mouse** | Pitch / Yaw / Orbit (All Modes) |
 | **F** | Toggle Flight Mode |
 
 ---

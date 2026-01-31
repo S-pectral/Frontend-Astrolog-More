@@ -20,7 +20,7 @@ export const PlanetFactory = {
         return mesh;
     },
 
-    createArtificialObject(spec) {
+    createArtificialObject(spec, planetName = null, parentName = null) {
         const group = new THREE.Group();
         // Add a placeholder invisible mesh for raycasting/selection until model loads
         const placeholderGeo = new THREE.SphereGeometry(spec.radius, 8, 8);
@@ -48,11 +48,16 @@ export const PlanetFactory = {
                 const model = gltf.scene;
 
                 const box = new THREE.Box3().setFromObject(model);
-                const size = box.getSize(new THREE.Vector3()).length();
-                // Target size roughly 15x radius visual (Increased from 8x based on user feedback)
-                const scaleFactor = (spec.radius * 15) / size;
+                const size = box.getSize(new THREE.Vector3());
+                const center = box.getCenter(new THREE.Vector3());
 
+                // Target size roughly 15x radius visual
+                const scaleFactor = (spec.radius * 15) / size.length();
                 model.scale.set(scaleFactor, scaleFactor, scaleFactor);
+
+                // Center the model so it rotates around its middle, not a random wing/pivot
+                model.position.sub(center.multiplyScalar(scaleFactor));
+
                 group.add(model);
 
                 model.traverse(c => {
@@ -107,6 +112,7 @@ export const PlanetFactory = {
             isMoon: true,
             spec: spec,
             name: spec.info?.title || planetName || 'Object',
+            parentName: parentName || spec.parentName || null, // Accept dynamic parent from signature
             orbitSpeed: spec.speed || 0,
             distance: dist,
             angle: angle
@@ -151,6 +157,79 @@ export const PlanetFactory = {
         earthGroup.add(atmosphere);
 
         return earthGroup;
+    },
+
+    createMercury(spec) {
+        const mercuryGroup = new THREE.Group();
+        const geometry = new THREE.SphereGeometry(spec.radius, 64, 64);
+        const material = new THREE.MeshStandardMaterial({
+            map: TextureFactory.generateMercuryTexture(),
+            roughness: 0.9,
+            metalness: 0.1,
+            bumpScale: 0.05
+        });
+        const mesh = new THREE.Mesh(geometry, material);
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        mercuryGroup.add(mesh);
+        return mercuryGroup;
+    },
+
+    createVenus(spec) {
+        const venusGroup = new THREE.Group();
+        const geometry = new THREE.SphereGeometry(spec.radius, 64, 64);
+        const material = new THREE.MeshStandardMaterial({
+            map: TextureFactory.generateVenusTexture(),
+            roughness: 0.7,
+            metalness: 0.1
+        });
+        const mesh = new THREE.Mesh(geometry, material);
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        venusGroup.add(mesh);
+
+        // Dense atmosphere
+        const atmosphere = this.createAtmosphere(spec.radius, spec.atmosphereColor, 0.3);
+        venusGroup.add(atmosphere);
+        return venusGroup;
+    },
+
+    createUranus(spec) {
+        const uranusGroup = new THREE.Group();
+        const geometry = new THREE.SphereGeometry(spec.radius, 64, 64);
+        const material = new THREE.MeshStandardMaterial({
+            map: TextureFactory.generateUranusTexture(),
+            roughness: 0.6,
+            metalness: 0.1
+        });
+        const mesh = new THREE.Mesh(geometry, material);
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        uranusGroup.add(mesh);
+
+        // Cyan atmosphere
+        const atmosphere = this.createAtmosphere(spec.radius, spec.atmosphereColor, 0.2);
+        uranusGroup.add(atmosphere);
+        return uranusGroup;
+    },
+
+    createNeptune(spec) {
+        const neptuneGroup = new THREE.Group();
+        const geometry = new THREE.SphereGeometry(spec.radius, 64, 64);
+        const material = new THREE.MeshStandardMaterial({
+            map: TextureFactory.generateNeptuneTexture(),
+            roughness: 0.6,
+            metalness: 0.1
+        });
+        const mesh = new THREE.Mesh(geometry, material);
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        neptuneGroup.add(mesh);
+
+        // Blue atmosphere
+        const atmosphere = this.createAtmosphere(spec.radius, spec.atmosphereColor, 0.2);
+        neptuneGroup.add(atmosphere);
+        return neptuneGroup;
     },
 
     createMars(spec) {
@@ -347,42 +426,50 @@ export const PlanetFactory = {
         return moonGroup;
     },
 
-    // Fallback for generic moons (if type is not set, though we use createArtificialObject for typed moons)
-    createGenericMoon(moonSpec) {
+    // Fallback for generic moons
+    createGenericMoon(moonSpec, parentName = null) {
         if (moonSpec.type) {
-            return this.createArtificialObject(moonSpec);
+            // Inject parentName into moonSpec temporarily so createArtificialObject can see it
+            // or pass it as an argument if we update the signature.
+            // Let's update createArtificialObject signature for consistency.
+            return this.createArtificialObject(moonSpec, null, parentName);
         }
-
-        const moonGroup = new THREE.Group();
-
+        const group = new THREE.Group();
         const geometry = new THREE.SphereGeometry(moonSpec.radius, 32, 32);
+
+        let texture = null;
+        const n = moonSpec.name.toLowerCase();
+        if (n === 'io') texture = TextureFactory.generateIoTexture();
+        else if (n === 'europa') texture = TextureFactory.generateEuropaTexture();
+        else texture = TextureFactory.generateMoonTexture();
+
         const material = new THREE.MeshStandardMaterial({
-            color: moonSpec.color,
-            roughness: 0.9,
-            metalness: 0.1
+            map: texture,
+            color: moonSpec.color || 0xcccccc
         });
         const mesh = new THREE.Mesh(geometry, material);
         mesh.castShadow = true;
         mesh.receiveShadow = true;
-        moonGroup.add(mesh);
+        group.add(mesh);
 
         const angle = Math.random() * Math.PI * 2;
-        moonGroup.position.set(
+        group.position.set(
             Math.cos(angle) * moonSpec.distance,
             0,
             Math.sin(angle) * moonSpec.distance
         );
 
-        moonGroup.userData = {
+        group.userData = {
             isMoon: true,
             spec: moonSpec,
             name: moonSpec.name,
-            orbitSpeed: moonSpec.speed,
+            parentName: parentName, // Store parent reference
+            orbitSpeed: moonSpec.speed || 0,
             distance: moonSpec.distance,
             angle: angle
         };
 
-        return moonGroup;
+        return group;
     },
 
     createSun(spec) {
@@ -530,10 +617,11 @@ export const PlanetFactory = {
                 planetGroup = this.createAsteroidBelt(spec, planetName);
                 break;
 
-            case 'mercury':
-            case 'venus':
-            case 'uranus':
-            case 'neptune':
+            case 'mercury': planetGroup = this.createMercury(spec); break;
+            case 'venus': planetGroup = this.createVenus(spec); break;
+            case 'uranus': planetGroup = this.createUranus(spec); break;
+            case 'neptune': planetGroup = this.createNeptune(spec); break;
+
             // Direct Moon/Satellite Access
             case 'phobos':
             case 'deimos':
@@ -573,8 +661,8 @@ export const PlanetFactory = {
             // Generate Moons
             if (spec.moons) {
                 spec.moons.forEach(moonSpec => {
-                    // Use createGenericMoon which checks type and delegates to createArtificialObject if needed
-                    const moon = this.createGenericMoon(moonSpec);
+                    // Pass parent planet name to child objects
+                    const moon = this.createGenericMoon(moonSpec, planetName);
                     planetGroup.add(moon);
                 });
             }
@@ -589,7 +677,7 @@ export const PlanetFactory = {
         // Use InstancedMesh for performance
         const geometry = new THREE.DodecahedronGeometry(spec.radius, 0); // Low poly rock
         const material = new THREE.MeshStandardMaterial({
-            color: spec.color || 0x888888,
+            map: TextureFactory.generateAsteroidTexture(spec.color),
             emissive: 0x111111, // Slight visibility boost
             roughness: 0.9,
             metalness: 0.1,
@@ -601,14 +689,17 @@ export const PlanetFactory = {
         mesh.castShadow = true;
         mesh.receiveShadow = true;
 
+        const isSystemBelt = spec.type === 'belt';
+        const width = spec.isFocusOnly ? 25 : (isSystemBelt ? 150 : 80);
+        const heightRange = spec.isFocusOnly ? 10 : (isSystemBelt ? 40 : 15);
+
         const dummy = new THREE.Object3D();
-        const centerRadius = spec.orbitRadius;
-        const width = spec.isFocusOnly ? 15 : 80; // Tighter ring in focus view
+        const centerRadius = spec.orbitRadius || 0;
 
         for (let i = 0; i < count; i++) {
             const angle = Math.random() * Math.PI * 2;
             const dist = centerRadius + (Math.random() - 0.5) * width;
-            const height = (Math.random() - 0.5) * (spec.isFocusOnly ? 5 : 15);
+            const height = (Math.random() - 0.5) * heightRange;
 
             dummy.position.set(
                 Math.cos(angle) * dist,

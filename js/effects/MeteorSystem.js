@@ -17,20 +17,20 @@ export class MeteorSystem {
     constructor(scene, particleSystem) {
         this.scene = scene;
         this.particleSystem = particleSystem;
-        
+
         // Active meteors
         this.meteors = [];
         this.maxMeteors = 3;
-        
+
         // Impact settings
         this.impactInterval = 8000; // ms between impacts
         this.lastImpactTime = 0;
         this.enabled = true;
-        
+
         // Target (planet center)
         this.targetPosition = new THREE.Vector3(0, 0, 0);
         this.targetRadius = 10; // Planet radius for collision
-        
+
         // Meteor configurations per planet
         this.meteorConfigs = {
             earth: {
@@ -62,22 +62,22 @@ export class MeteorSystem {
                 glowColor: 0x8844ff
             }
         };
-        
+
         this.currentConfig = this.meteorConfigs.earth;
     }
-    
+
     /**
      * Initialize meteor system
      */
     init() {
         console.log('Initializing Meteor System...');
-        
+
         // Start meteor spawning
         this.startMeteorSpawning();
-        
+
         console.log('✓ Meteor System initialized');
     }
-    
+
     /**
      * Start automatic meteor spawning
      */
@@ -88,7 +88,7 @@ export class MeteorSystem {
             }
         }, this.currentConfig.frequency);
     }
-    
+
     /**
      * Spawn a new meteor
      */
@@ -97,23 +97,23 @@ export class MeteorSystem {
         const spawnDistance = 80;
         const theta = Math.random() * Math.PI * 2;
         const phi = Math.acos(2 * Math.random() - 1);
-        
+
         const spawnPosition = new THREE.Vector3(
             spawnDistance * Math.sin(phi) * Math.cos(theta),
             spawnDistance * Math.sin(phi) * Math.sin(theta),
             spawnDistance * Math.cos(phi)
         );
-        
+
         // Create meteor object
         const meteor = this.createMeteorMesh(spawnPosition);
-        
+
         // Calculate trajectory toward planet
         const direction = new THREE.Vector3()
             .subVectors(this.targetPosition, spawnPosition)
             .normalize();
-        
+
         const velocity = direction.multiplyScalar(this.currentConfig.speed);
-        
+
         // Add to scene and tracking
         this.scene.add(meteor);
         this.meteors.push({
@@ -124,7 +124,7 @@ export class MeteorSystem {
             maxAge: 10
         });
     }
-    
+
     /**
      * Create meteor mesh with glow
      * @param {THREE.Vector3} position
@@ -133,8 +133,8 @@ export class MeteorSystem {
     createMeteorMesh(position) {
         const meteorGroup = new THREE.Group();
         meteorGroup.position.copy(position);
-        
-        // Core meteor bi sik anlamadım çaktırma
+
+        // Core meteor mesh geometry and appearance
         const geometry = new THREE.SphereGeometry(this.currentConfig.size, 16, 16);
         const material = new THREE.MeshStandardMaterial({
             color: this.currentConfig.color,
@@ -143,10 +143,10 @@ export class MeteorSystem {
             roughness: 0.7,
             metalness: 0.3
         });
-        
+
         const meteorMesh = new THREE.Mesh(geometry, material);
         meteorGroup.add(meteorMesh);
-        
+
         // Glow effect
         const glowGeometry = new THREE.SphereGeometry(this.currentConfig.size * 1.5, 16, 16);
         const glowMaterial = new THREE.MeshBasicMaterial({
@@ -155,40 +155,40 @@ export class MeteorSystem {
             opacity: 0.4,
             blending: THREE.AdditiveBlending
         });
-        
+
         const glowMesh = new THREE.Mesh(glowGeometry, glowMaterial);
         meteorGroup.add(glowMesh);
-        
+
         // Point light for illumination
         const light = new THREE.PointLight(this.currentConfig.glowColor, 2, 10);
         meteorGroup.add(light);
-        
+
         return meteorGroup;
     }
-    
+
     /**
      * Update meteor system (called per frame)
      */
     update() {
         const deltaTime = 0.016; // Approximate 60fps
-        
+
         for (let i = this.meteors.length - 1; i >= 0; i--) {
             const meteor = this.meteors[i];
-            
+
             // Update age
             meteor.age += deltaTime;
-            
+
             // Remove old meteors
             if (meteor.age >= meteor.maxAge) {
                 this.removeMeteor(i);
                 continue;
             }
-            
+
             // Update position
             meteor.mesh.position.add(
                 meteor.velocity.clone().multiplyScalar(deltaTime)
             );
-            
+
             // Create trail particles
             if (Math.random() < 0.3) {
                 this.particleSystem.createTrail(
@@ -197,24 +197,24 @@ export class MeteorSystem {
                     this.currentConfig.size * 2
                 );
             }
-            
+
             // Check for collision with planet
             const distance = meteor.mesh.position.distanceTo(this.targetPosition);
-            
+
             if (distance <= this.targetRadius) {
                 this.handleImpact(meteor.mesh.position.clone());
                 this.removeMeteor(i);
             }
         }
     }
-    
+
     /**
      * Handle meteor impact
      * @param {THREE.Vector3} position
      */
     handleImpact(position) {
         console.log('Meteor impact at', position);
-        
+
         // Create explosion particles
         this.particleSystem.createExplosion(
             position,
@@ -222,28 +222,28 @@ export class MeteorSystem {
             this.currentConfig.color,
             8
         );
-        
+
         // Create shockwave
         this.particleSystem.createShockwave(
             position,
             15,
             this.currentConfig.glowColor
         );
-        
+
         // Create debris
         this.particleSystem.createDebrisField(
             position,
             30,
             5
         );
-        
+
         // Flash effect (could trigger camera shake)
         this.createImpactFlash(position);
-        
+
         // Optional: Trigger camera shake
         // this.cameraSystem.shake(0.3, 0.2);
     }
-    
+
     /**
      * Create impact flash effect
      * @param {THREE.Vector3} position
@@ -256,9 +256,9 @@ export class MeteorSystem {
             30
         );
         flashLight.position.copy(position);
-        
+
         this.scene.add(flashLight);
-        
+
         // Animate flash
         gsap.to(flashLight, {
             intensity: 0,
@@ -269,17 +269,17 @@ export class MeteorSystem {
             }
         });
     }
-    
+
     /**
      * Remove meteor from scene
      * @param {number} index
      */
     removeMeteor(index) {
         const meteor = this.meteors[index];
-        
+
         if (meteor && meteor.mesh) {
             this.scene.remove(meteor.mesh);
-            
+
             // Dispose geometries and materials
             meteor.mesh.traverse((child) => {
                 if (child.geometry) child.geometry.dispose();
@@ -292,10 +292,10 @@ export class MeteorSystem {
                 }
             });
         }
-        
+
         this.meteors.splice(index, 1);
     }
-    
+
     /**
      * Update meteor system for specific planet
      * @param {string} planetName
@@ -306,7 +306,7 @@ export class MeteorSystem {
             console.log(`✓ Meteor system updated for ${planetName}`);
         }
     }
-    
+
     /**
      * Set target planet radius
      * @param {number} radius
@@ -314,7 +314,7 @@ export class MeteorSystem {
     setTargetRadius(radius) {
         this.targetRadius = radius;
     }
-    
+
     /**
      * Enable/disable meteor spawning
      * @param {boolean} enabled
@@ -322,7 +322,7 @@ export class MeteorSystem {
     setEnabled(enabled) {
         this.enabled = enabled;
     }
-    
+
     /**
      * Clear all active meteors
      */
@@ -331,16 +331,16 @@ export class MeteorSystem {
             this.removeMeteor(i);
         }
     }
-    
+
     /**
      * Cleanup and dispose resources
      */
     dispose() {
         console.log('Disposing Meteor System...');
-        
+
         this.clearAllMeteors();
         this.enabled = false;
-        
+
         console.log('✓ Meteor System disposed');
     }
 }

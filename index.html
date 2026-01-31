@@ -49,7 +49,7 @@
                 <li class="dropdown">
                     <a href="#" class="nav-link dropdown-toggle">
                         <span class="nav-icon">🪐</span>
-                        <span class="nav-text">Gezegenler</span>
+                        <span class="nav-text">Planets</span>
                         <div class="nav-glow"></div>
                     </a>
                     <div class="dropdown-content">
@@ -70,7 +70,7 @@
                 <li class="dropdown">
                     <a href="#" class="nav-link dropdown-toggle">
                         <span class="nav-icon">🌑</span>
-                        <span class="nav-text">Uydular</span>
+                        <span class="nav-text">Satellites</span>
                         <div class="nav-glow"></div>
                     </a>
                     <div class="dropdown-content">
@@ -96,7 +96,7 @@
                 <li class="dropdown">
                     <a href="#" class="nav-link dropdown-toggle">
                         <span class="nav-icon">🛰️</span>
-                        <span class="nav-text">Yapay Cisimler</span>
+                        <span class="nav-text">Artificial Objects</span>
                         <div class="nav-glow"></div>
                     </a>
                     <div class="dropdown-content">
@@ -111,13 +111,13 @@
                 <li class="dropdown">
                     <a href="#" class="nav-link dropdown-toggle">
                         <span class="nav-icon">🌌</span>
-                        <span class="nav-text">Cisimler</span>
+                        <span class="nav-text">Other Objects</span>
                         <div class="nav-glow"></div>
                     </a>
                     <div class="dropdown-content">
                         <a href="#" data-planet="blackhole" class="nav-link"><span class="nav-icon">⚫</span> Black
                             Hole</a>
-                        <a href="#" data-planet="asteroidBelt" class="nav-link"><span class="nav-icon">☄️</span>
+                        <a href="#" data-planet="asteroidbelt" class="nav-link"><span class="nav-icon">☄️</span>
                             Asteroid Belt</a>
                     </div>
                 </li>
@@ -181,10 +181,6 @@
                 <span class="hud-label">SPEED</span>
                 <span class="hud-value" id="hud-speed">0 km/s</span>
             </div>
-            <div class="hud-stat">
-                <span class="hud-label">DISTANCE</span>
-                <span class="hud-value" id="hud-dist">-</span>
-            </div>
         </div>
 
         <!-- NEW VISUAL COMPASS -->
@@ -199,6 +195,22 @@
 
     <!-- Main Canvas -->
     <canvas id="cosmos-canvas"></canvas>
+
+    <!-- Mode Hint -->
+    <div id="mode-hint" class="hud-hint">
+        <span class="hint-key">F</span>
+        <span class="hint-text">MODE</span>
+    </div>
+
+    <!-- Orbit Controls Help (Desktop only) -->
+    <div id="orbit-controls-hint" class="hud-hint orbit-only">
+        <div class="hint-stack">
+            <span class="hint-text"><b>← →</b> PLANETS</span>
+            <span class="hint-text"><b>↑ ↓</b> MOONS</span>
+        </div>
+        <div class="hint-divider"></div>
+        <span class="hint-text">DRAG • SCROLL</span>
+    </div>
 
     <!-- Libraries -->
     <script src="lib/three.min.js"></script>

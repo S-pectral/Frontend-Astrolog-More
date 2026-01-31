@@ -204,12 +204,16 @@ export class SpaceshipFactory {
 
                 const box = new THREE.Box3().setFromObject(model);
                 const size = box.getSize(new THREE.Vector3());
+                const center = box.getCenter(new THREE.Vector3());
                 const maxDim = Math.max(size.x, size.y, size.z);
-                model.scale.setScalar(8 / maxDim);
+                const scaleVal = 8 / maxDim;
+                model.scale.setScalar(scaleVal);
 
-                // Adjust rotation mainly if model comes in wrong
-                // Standard GLTF often -Z forward, but sometimes +Z.
-                // We assume User model needs Y rotation to face -Z?
+                // Center the model pivot
+                model.position.sub(center.multiplyScalar(scaleVal));
+
+                // Adjust rotation: Standard GLTF might need flip to face -Z 
+                // We'll reset and use a standard orientation if the group is aligned.
                 model.rotation.y = Math.PI;
 
                 spaceship.add(model);

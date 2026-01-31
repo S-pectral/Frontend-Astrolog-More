@@ -281,7 +281,7 @@
 
 /* Dropdown Content (Hidden by Default) */
 .dropdown-content {
-    display: none;
+    visibility: hidden;
     position: absolute;
     top: 100%;
     left: 0;
@@ -297,13 +297,17 @@
     opacity: 0;
     transform: translateY(-10px);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition-delay: 0.1s;
+    /* Buffer to prevent accidental closure */
 }
 
 /* Show Dropdown on Hover */
 .dropdown:hover .dropdown-content {
-    display: block;
+    visibility: visible;
     opacity: 1;
     transform: translateY(0);
+    transition-delay: 0s;
+    /* Open immediately on intentional hover */
 }
 
 /* Dropdown Links */

@@ -42,26 +42,42 @@ export class UIManager {
         }
     }
 
-    updateInfoPanel(info) {
+    updateInfoPanel(info, parentName = null) {
         const title = document.getElementById('info-title');
         const description = document.getElementById('info-description');
         const distance = document.getElementById('stat-distance');
         const diameter = document.getElementById('stat-diameter');
         const period = document.getElementById('stat-period');
 
+        // Translate or capitalize parent name
+        let parentStr = '';
+        if (parentName) {
+            const translatedParent = parentName.charAt(0).toUpperCase() + parentName.slice(1);
+            parentStr = `<br><span style="color: #64c8ff; font-size: 0.8em;">Orbiting: ${translatedParent}</span>`;
+        }
+
         const elements = [
-            { el: title, val: info.title, delay: 0 },
+            { el: title, val: info.title + parentStr, delay: 0, isHTML: true },
             { el: description, val: info.description, delay: 0.1 },
             { el: distance, val: info.distance, delay: 0.2 },
             { el: diameter, val: info.diameter, delay: 0.3 },
             { el: period, val: info.period, delay: 0.4 }
         ];
 
-        elements.forEach(({ el, val, delay }) => {
+        elements.forEach(({ el, val, delay, isHTML }) => {
             if (el) {
                 gsap.fromTo(el,
                     { opacity: 0, y: 20 },
-                    { opacity: 1, y: 0, duration: 0.5, delay, onStart: () => el.textContent = val }
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.5,
+                        delay,
+                        onStart: () => {
+                            if (isHTML) el.innerHTML = val;
+                            else el.textContent = val;
+                        }
+                    }
                 );
             }
         });
@@ -87,6 +103,10 @@ export class UIManager {
         }
         // Hide HUD in Orbit Mode
         if (hud) hud.classList.add('hidden');
+
+        // Toggle hints
+        const orbitHint = document.getElementById('orbit-controls-hint');
+        if (orbitHint) orbitHint.classList.remove('hidden');
     }
 
     hideUI() {
@@ -94,24 +114,29 @@ export class UIManager {
         const infoPanel = document.getElementById('info-panel');
         const hud = document.getElementById('flight-hud');
 
-        if (mainNav) mainNav.classList.add('hidden');
-        if (infoPanel) infoPanel.classList.add('hidden');
+        if (mainNav) {
+            mainNav.classList.remove('visible');
+            mainNav.classList.add('hidden');
+        }
+        if (infoPanel) {
+            infoPanel.classList.remove('visible');
+            infoPanel.classList.add('hidden');
+        }
 
         // Show HUD in Flight Mode
         if (hud) hud.classList.remove('hidden');
+
+        // Toggle hints
+        const orbitHint = document.getElementById('orbit-controls-hint');
+        if (orbitHint) orbitHint.classList.add('hidden');
     }
 
-    updateHUD(speed, targetName, distance) {
+    updateHUD(speed, targetName) {
         const speedEl = document.getElementById('hud-speed');
         const targetEl = document.getElementById('hud-target');
-        const distEl = document.getElementById('hud-dist');
-        const actionEl = document.getElementById('hud-action');
 
         if (speedEl) speedEl.textContent = speed.toFixed(1) + ' km/s';
         if (targetEl) targetEl.textContent = targetName ? targetName.toUpperCase() : 'DEEP SPACE';
-
-        else if (distance > 1000) distEl.textContent = (distance / 1000).toFixed(1) + 'k km';
-        else distEl.textContent = Math.floor(distance) + ' km';
     }
     updateLandingPrompt(show, text = "Press [L] to Land") {
         const actionEl = document.getElementById('hud-action');

@@ -87,6 +87,9 @@ class CosmicApp {
             if (e.code === 'KeyF') {
                 this.toggleFlightMode();
             }
+            if (!this.isFlightMode) {
+                this.handleKeyboardNavigation(e);
+            }
         });
 
 
@@ -174,7 +177,11 @@ class CosmicApp {
 
     switchPlanet(planetName) {
         if (planetName === this.currentPlanetName) return;
-        if (this.isFlightMode) return;
+
+        // If in flight mode, exit it first to return to orbit mode
+        if (this.isFlightMode) {
+            this.toggleFlightMode();
+        }
 
         this.currentPlanetName = planetName;
         const tl = gsap.timeline();
@@ -223,7 +230,7 @@ class CosmicApp {
             this.currentPlanet = planetGroup;
             if (planetGroup.userData.spec) {
                 const spec = planetGroup.userData.spec;
-                if (spec.info) this.uiManager.updateInfoPanel(spec.info);
+                if (spec.info) this.uiManager.updateInfoPanel(spec.info, planetGroup.userData.parentName);
                 const radius = spec.radius || 10;
                 this.minOrbitRadius = radius * 1.5;
                 this.maxOrbitRadius = radius * 10;
@@ -462,7 +469,7 @@ class CosmicApp {
                     }
 
                     if (hitObj && hitObj.userData && hitObj.userData.spec && hitObj.userData.spec.info) {
-                        this.uiManager.updateInfoPanel(hitObj.userData.spec.info);
+                        this.uiManager.updateInfoPanel(hitObj.userData.spec.info, hitObj.userData.parentName);
                         this.uiManager.showInfoPanel();
                         this.soundManager.playClickSound();
                     }
@@ -508,7 +515,11 @@ class CosmicApp {
 
     switchPlanet(planetName) {
         if (planetName === this.currentPlanetName) return;
-        if (this.isFlightMode) return;
+
+        // If in flight mode, exit it first to return to orbit mode
+        if (this.isFlightMode) {
+            this.toggleFlightMode();
+        }
 
         this.currentPlanetName = planetName;
         const tl = gsap.timeline();
@@ -557,7 +568,7 @@ class CosmicApp {
             this.currentPlanet = planetGroup;
             if (planetGroup.userData.spec) {
                 const spec = planetGroup.userData.spec;
-                if (spec.info) this.uiManager.updateInfoPanel(spec.info);
+                if (spec.info) this.uiManager.updateInfoPanel(spec.info, planetGroup.userData.parentName);
                 const radius = spec.radius || 10;
                 this.minOrbitRadius = radius * 1.5;
                 this.maxOrbitRadius = radius * 10;
@@ -687,7 +698,7 @@ class CosmicApp {
             // Display Distance
             const displayDist = Math.floor(closestDist * 1000); // Simulated km
 
-            this.uiManager.updateHUD(speed, targetName, displayDist);
+            this.uiManager.updateHUD(speed, targetName);
 
             // Update Compass
             this.uiManager.updateCompass(this.sceneManager.camera, this.systemPlanets);
@@ -721,6 +732,12 @@ class CosmicApp {
         const finalTheta = this.currentTheta + (this.mouse.x * 0.5);
         const finalPhi = this.currentPhi + (this.mouse.y * 0.5);
         const clampedPhi = Math.max(0.1, Math.min(Math.PI - 0.1, finalPhi));
+
+        // Clip Prevention (Orbit Mode)
+        if (this.currentPlanet) {
+            const minRadius = this.currentPlanet.userData.spec.radius * 1.5;
+            this.orbitRadius = Math.max(minRadius, this.orbitRadius);
+        }
 
         this.sceneManager.camera.position.x = this.orbitRadius * Math.sin(clampedPhi) * Math.cos(finalTheta);
         this.sceneManager.camera.position.y = this.orbitRadius * Math.cos(clampedPhi);
@@ -788,8 +805,16 @@ class CosmicApp {
             this.spaceship.position.set(200, 20, 280);
             this.spaceship.lookAt(0, 0, 0); // Look at Sun
 
-            if (this.flightController) this.flightController.speed = 0;
-            else this.flightController = new FlightController(this.spaceship, this.sceneManager.camera);
+            if (this.flightController) {
+                this.flightController.speed = 0;
+                this.flightController.collidables = this.systemPlanets;
+                this.flightController.currentPitch = 0;
+                this.flightController.currentYaw = 0;
+                this.flightController.currentRoll = 0;
+                this.spaceship.rotation.set(0, 0, 0); // Hard reset orientation
+            } else {
+                this.flightController = new FlightController(this.spaceship, this.sceneManager.camera, this.systemPlanets);
+            }
 
             document.body.style.cursor = 'none';
             if (this.uiManager.hideUI) this.uiManager.hideUI();
@@ -926,6 +951,54 @@ class CosmicApp {
             // Restore Orbit Mode
             this.uiManager.showUI();
             this.switchPlanet(this.currentPlanetName);
+        }
+    }
+
+    handleKeyboardNavigation(e) {
+        const planets = ['sun', 'mercury', 'venus', 'earth', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'blackhole'];
+        const moonMap = {
+            'earth': ['earth', 'moon', 'iss', 'hubble'],
+            'mars': ['mars', 'phobos', 'deimos'],
+            'jupiter': ['jupiter', 'io', 'europa', 'ganymede', 'callisto'],
+            'saturn': ['saturn', 'titan', 'rhea']
+        };
+
+        let current = this.currentPlanetName;
+        let parent = planets.includes(current) ? current : (planetSpecs[current]?.parentName || null);
+
+        // Find parent if current is a focus-only moon
+        if (!parent) {
+            for (const p in moonMap) {
+                if (moonMap[p].includes(current)) {
+                    parent = p;
+                    break;
+                }
+            }
+        }
+
+        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+            // Planet navigation
+            let mainTarget = parent || current;
+            if (!planets.includes(mainTarget)) mainTarget = 'earth'; // Fallback
+
+            let idx = planets.indexOf(mainTarget);
+            if (e.key === 'ArrowRight') idx = (idx + 1) % planets.length;
+            else idx = (idx - 1 + planets.length) % planets.length;
+
+            this.switchPlanet(planets[idx]);
+        }
+        else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+            // Moon navigation
+            if (!parent || !moonMap[parent]) return;
+
+            const moons = moonMap[parent];
+            let idx = moons.indexOf(current);
+            if (idx === -1) idx = 0; // Start at planet if not found
+
+            if (e.key === 'ArrowDown') idx = (idx + 1) % moons.length;
+            else idx = (idx - 1 + moons.length) % moons.length;
+
+            this.switchPlanet(moons[idx]);
         }
     }
 }
